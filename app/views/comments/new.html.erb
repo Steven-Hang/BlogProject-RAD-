@@ -1,0 +1,35 @@
+<% provide(:title, @post.title) %>
+
+<h1><%= @post.title %></h1>
+<hr>
+
+<% if false %>
+<%= render 'form', comment: @comment  %> 
+<% end %>
+
+<%= form_for @comment, :url => { :action => :create, :id => @post.id} do |f| %>
+    <%if @comment.errors.any? %>
+      <h3 style = "color:red;">Errors</h3>
+      <ul>
+      <% @comment.errors.full_messages.each do |msg| %>
+      <li style = "color:red;"><%=msg%></li>
+      <% end %>
+    </ul>	
+   <% end %>
+      <%= f.text_area :content, size: "24x10", placeholder: "Write your comments here" %>
+		<br><br>
+      <%= f.submit "Submit", class: "btn btn-primary" %>
+<% end %>
+
+<h2>Comments:</h2>
+<div class = "comm_list">
+	<% @post.comments.each do |comment|%>
+        <% if !(comment.content.blank?) && comment.content.size > 3 && comment.content.size < 1000 %>
+		<p style = "color:grey;"> <%= comment.belongs %> - <%= time_ago_in_words(comment.created_at) %> ago </p>
+		<Strong><p style = "font-size:17px;"><%= comment.content %></p></strong>
+		<% end %>
+	<% end %>
+</div>
+
+
+<%= link_to 'Back', comments_path %>

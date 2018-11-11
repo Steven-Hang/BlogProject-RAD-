@@ -1,0 +1,22 @@
+ <% provide(:title, "Home" ) %> <% provide(:text, "Page : " ) %> <% provide(:num, @page.to_s  ) %>
+
+<div class = "container">
+<h1>RMIT NEWS</h1>
+<hr>
+    <div class ="col-md-6">
+    <ol>
+        <% @posts.each do |post| %>
+            <strong><li><p style="font-size:17px;"><%= link_to post.title, :controller => :comments, :action => :new , :id => post.id %> | (<%= link_to  URI.parse(post.source).host, post.source %>)</p></li></strong>
+            <% # TODO %>
+            <p>by <%= post.user.username %> made <%= time_ago_in_words(post.created_at) %> ago |  <%= link_to post.comments.count.to_s + ' comments', :controller => :comments, :action => :new , :id => post.id %> </p>
+			<% if false %>
+			<%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+			<% end %>
+        <% end %>
+    </ol>
+    </div>
+</div>
+<div class = "link_sec">
+  <p><%= link_to 'New Post', new_post_path %></p>
+  <p><%= link_to "More (Next Page)", posts_path(page: @page + 1) %></p>
+</div>
